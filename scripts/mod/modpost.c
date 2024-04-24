@@ -41,6 +41,9 @@ static int sec_mismatch_verbose = 1;
 static int sec_mismatch_fatal = 0;
 /* ignore missing files */
 static int ignore_missing_files;
+/* Turn warnings into errors */
+static int fail_on_warnings;
+static int warnings_count;
 
 enum export {
 	export_plain,      export_unused,     export_gpl,
@@ -64,6 +67,8 @@ PRINTF void fatal(const char *fmt, ...)
 	va_start(arglist, fmt);
 	vfprintf(stderr, fmt, arglist);
 	va_end(arglist);
+
+	warnings_count++;
 
 	exit(1);
 }
@@ -2461,7 +2466,7 @@ int main(int argc, char **argv)
 	struct ext_sym_list *extsym_iter;
 	struct ext_sym_list *extsym_start = NULL;
 
-	while ((opt = getopt(argc, argv, "i:I:e:mnsST:o:awM:K:E")) != -1) {
+	while ((opt = getopt(argc, argv, "i:I:e:mnsST:o:awFM:K:E")) != -1) {
 		switch (opt) {
 		case 'i':
 			kernel_read = optarg;
@@ -2501,6 +2506,9 @@ int main(int argc, char **argv)
 			break;
 		case 'w':
 			warn_unresolved = 1;
+			break;
+		case 'F':
+			fail_on_warnings = 1;
 			break;
 		case 'E':
 			sec_mismatch_fatal = 1;
@@ -2569,8 +2577,12 @@ int main(int argc, char **argv)
 			fatal("modpost: Section mismatches detected.\n"
 			      "Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.\n");
 		}
+	if (fail_on_warnings && warnings_count)
+		err |= 2;
+
 	}
 	free(buf.p);
+	
 
 	return err;
 }
