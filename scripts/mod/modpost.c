@@ -2505,10 +2505,10 @@ int main(int argc, char **argv)
 			files_source = optarg;
 			break;
 		case 'w':
-			warn_unresolved = 1;
+			warn_unresolved = 0;
 			break;
 		case 'F':
-			fail_on_warnings = 1;
+			fail_on_warnings = 0;
 			break;
 		case 'E':
 			sec_mismatch_fatal = 1;
