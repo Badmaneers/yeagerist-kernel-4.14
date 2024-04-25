@@ -3,4 +3,4 @@
 
 #  Yeagerist Kernel 
 
-Yeagerist Kernel is created as fun project for even devices . Yeagerist Kernel is just a integration of KernelSU to stock kernel 4.19.
+Yeagerist Kernel is created as fun project for even devices . Yeagerist Kernel is just a integration of KernelSU to stock kernel 4.14.
